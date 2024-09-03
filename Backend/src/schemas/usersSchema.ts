@@ -7,6 +7,12 @@ const userSignupSchema: zod.Schema = zod.object({
     lastName: zod.string().max(70),
 });
 
+const userLoginSchema: zod.Schema = zod.object({
+    email: zod.string().email(),
+    password: zod.string().min(6).max(70),
+});
+
 export {
-    userSignupSchema
+    userSignupSchema,
+    userLoginSchema
 }

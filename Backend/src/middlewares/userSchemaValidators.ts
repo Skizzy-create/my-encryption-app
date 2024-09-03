@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { userSignupSchema } from "../schemas/usersSchema";
+import { userLoginSchema, userSignupSchema } from "../schemas/usersSchema";
 import { SafeParseReturnType } from "zod";
 
 const validateUserSignUp = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
@@ -35,6 +35,36 @@ const validateUserSignUp = async (req: Request, res: Response, next: NextFunctio
     };
 };
 
+const validateUserLogin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    try {
+        const isValid: SafeParseReturnType<any, any> = userLoginSchema.safeParse({
+            email: email,
+            password: password
+        });
+
+        console.log("Login Route Called");
+        console.log("isValid zod  = " + isValid.success);
+
+        if (!isValid.success) {
+            return res.status(400).json({
+                message: "Invalid request data",
+                errors: isValid.error
+            });
+        };
+        next();
+    } catch (err) {
+        console.log("Error in userSchemaValidators.ts: " + err);
+        return res.status(500).json({
+            message: "INTERNAL SERVER ERROR -ZOD VALIDATION USER LOGIN",
+            error: err
+        });
+    };
+}
+
 export {
-    validateUserSignUp
+    validateUserSignUp,
+    validateUserLogin
 };

@@ -9,7 +9,7 @@ const JWT_SECRET: string = process.env.JWT_SECRET || "";
 const hashPassword = async (password: String | Buffer): Promise<String | null> => {
     try {
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = bcrypt.hash(password.toString(), salt);
+        const hashedPassword = await bcrypt.hash(password.toString(), salt);
         return hashedPassword;
     } catch (err) {
         console.log("Error hashing password: ", err);
@@ -17,8 +17,8 @@ const hashPassword = async (password: String | Buffer): Promise<String | null> =
     }
 };
 
-const comparePassword = async (password: string | Buffer, hashedPassword: string): Promise<boolean> => {
-    const isValid = bcrypt.compare(password.toString(), hashedPassword);
+const comparePassword = async (password: String | Buffer, hashedPassword: string): Promise<boolean> => {
+    const isValid = await bcrypt.compare(password.toString(), hashedPassword);
     return isValid;
 }
 
