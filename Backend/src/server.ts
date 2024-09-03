@@ -1,13 +1,24 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import connectWithRetry from './database/database';
+import { countRequest, countTime } from './utility/logs';
+import mainRouter from './routes/index';
+
 dotenv.config();
 const PORT: number = parseInt(process.env.PORT || '3000', 10);
+
 
 const startServer = async (): Promise<void> => {
     try {
         await connectWithRetry();
         const app: Application = express();
+
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+        app.use(countRequest);
+        app.use(countTime);
+
+        app.use('/api/v1', mainRouter);
 
         app.get('/', (req: Request, res: Response) => {
             // later will be used to actually verify if user is logged in.

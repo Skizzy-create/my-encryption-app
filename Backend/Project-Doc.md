@@ -42,6 +42,7 @@ backend/
 │   ├── middlewares/
 │   │   ├── authMiddleware.ts             // Middleware for protecting routes that require authentication
 │   │   ├── errorMiddleware.ts            // Middleware for handling errors across the application
+|   |   ├── userExistsMiddleware.ts       // New: Middleware to check if a user exists in the database
 │   │   └── fileUploadMiddleware.ts       // New: Middleware for handling file uploads (using Multer)
 │   │
 │   └── server.ts                         // Configures and starts the server
@@ -79,11 +80,11 @@ backend/
 
 ##### 2. **User Authentication**
    - **Create User Model**
-     - Fields: `email`, `password`, `createdAt`.
+     - Fields: `email`, `firstName`, `lastName`, `password`, `createdAt`.
    - **Create Authentication Routes**
      - **Register**
        - Method: `POST /api/auth/register`
-       - Requires: `email`, `password`.
+       - Requires: `email`, `firstName`, `lastName`, `password`, `createdAt`.
        - Action: Hash password using `bcrypt`, save user to DB, return JWT.
      - **Login**
        - Method: `POST /api/auth/login`
