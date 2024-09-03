@@ -4,7 +4,7 @@
 ![Node.js](https://img.shields.io/badge/Node.js-14.x-green)
 ![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
 ![Mongoose](https://img.shields.io/badge/Mongoose-6.x-brightgreen)
-![Frontend](https://img.shields.io/badge/Frontend-Vue.js-orange)
+![Frontend](https://img.shields.io/badge/Frontend-React.js-orange)
 
 ## Overview
 
