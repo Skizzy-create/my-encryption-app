@@ -1,21 +1,17 @@
-import crypto from 'crypto';
-// - **Encryption Service**
-// - **encryptMessage(algorithm: string, message: string)**
-//   - Utilizes `crypto` library.
-//   - Encrypts the message based on the selected algorithm.
-//   - Supported algorithms: `AES`, `RSA`, `DES`.
+import { createCipheriv, } from 'crypto';
+import { read, readFileSync } from 'fs';
 
-enum EncryptionAlgorithms {
-    AES = "aes-256-cbc",
-    RSA = "rsa",
-    DES = "des"
+// only supports the aes-256-cbc algorithm for now.
+const encryptMessage = (algorithm: string, message: string): string => {
+    const key = Buffer.from(readFileSync('key-aes256-cbc.pem', 'utf-8'), 'base64');
+    const iv = Buffer.from(readFileSync('iv-aes256-cbc.pem', 'utf-8'), 'base64');
+
+    const cipher = createCipheriv(algorithm, key, iv);
+    let encryptedMessage = cipher.update(message, 'utf-8', 'hex');
+    encryptedMessage += cipher.final('hex');
+    return encryptedMessage;
 };
 
-const encryptMessage = (algorithm: string, message: string): string => {
-    const key = crypto.randomBytes(32);
-    const iv = crypto.randomBytes(16);
-    const cipher = crypto.createCipheriv(algorithm, key, iv);
-    let encrypted = cipher.update(message, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
+export {
+    encryptMessage
 };

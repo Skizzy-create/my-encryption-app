@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 import connectWithRetry from './database/database';
 import { countRequest, countTime } from './utility/logs';
 import mainRouter from './routes/index';
+import { encryptMessage } from './services/encryptionService';
+import { supportedAlgos, supportedAlgosObj } from './utility/supportedAlgos';
+import { decryptMessage } from './services/decryptionService';
+import { generateKeyandIV } from './services/symetricEncryptionKeyGen';
 
 dotenv.config();
 const PORT: number = parseInt(process.env.PORT || '3000', 10);
@@ -37,6 +41,15 @@ const startServer = async (): Promise<void> => {
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
+
+        generateKeyandIV();
+
+        // const message = 'Hare krishna Hare Krishna, Krishna krishna hare hare';
+        // const encryptedMessage = encryptMessage(supportedAlgosObj.AES256, message);
+        // console.log('\nencrypted message =', encryptedMessage, '\n');
+
+        // const decryptedMessage = decryptMessage(supportedAlgosObj.AES256, encryptedMessage);
+        // console.log('decrypted message =', decryptedMessage, '\n');
 
     } catch (err) {
         console.log("Failed to connect to the server", err);

@@ -102,12 +102,12 @@ backend/
    - **Decryption Service**
      - **decryptMessage(algorithm: string, encryptedMessage: string)**
        - Decrypts the message based on the algorithm used.
-   - **Encryption Controller**
+   - **Encryption Routes**
      - **Encrypt Route**
        - Method: `POST /api/encrypt`
        - Requires: `algorithm`, `message`.
        - Action: Encrypt message and return the encrypted string.
-   - **Decryption Controller**
+   - **Decryption Routes**
      - **Decrypt Route**
        - Method: `POST /api/decrypt`
        - Requires: `algorithm`, `encryptedMessage`.
@@ -118,7 +118,7 @@ backend/
      - **generateQRCode(data: string)**
        - Utilizes `qrcode` library.
        - Generates a QR code from the encrypted message and algorithm.
-   - **QR Code Controller**
+   - **QR Code Routes**
      - **Generate QR Code Route**
        - Method: `POST /api/qrcode`
        - Requires: `data` (encrypted message + algorithm).
