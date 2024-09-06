@@ -1,7 +1,7 @@
 import { createDecipheriv } from "crypto";
 import { readFileSync } from "fs";
 
-const decryptMessage = (algorithm: string, message: string): string => {
+const decryptMessage = (message: string, algorithm: string): string => {
     const key = Buffer.from(readFileSync('key-aes256-cbc.pem', 'utf-8'), 'base64');
     // above we are loadign the key from the file
     // utf-8 is the encoding of the file, base64 is the encoding of the key,

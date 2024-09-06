@@ -11,7 +11,7 @@ const validateMessageEncryptDecrypt = (req: Request, res: Response, next: NextFu
             algo
         });
 
-        console.log("Message Encrypt Route Called");
+        console.log("Message Route Called");
         console.log("isValid zod  = " + isValid.success);
 
         if (!isValid.success) {

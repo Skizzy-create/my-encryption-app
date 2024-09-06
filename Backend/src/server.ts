@@ -48,7 +48,7 @@ const startServer = async (): Promise<void> => {
         // const encryptedMessage = encryptMessage(message, supportedAlgosObj.AES256);
         // console.log('\nencrypted message =', encryptedMessage, '\n');
 
-        // const decryptedMessage = decryptMessage(supportedAlgosObj.AES256, encryptedMessage);
+        // const decryptedMessage = decryptMessage(encryptedMessage, supportedAlgosObj.AES256);
         // console.log('decrypted message =', decryptedMessage, '\n');
 
     } catch (err) {

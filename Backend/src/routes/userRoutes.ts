@@ -75,7 +75,8 @@ router.post('/signup', validateUserSignUp, async (req: Request, res: Response): 
         console.log("Server Error: SingUp Route \nError: " + err);
         return res.status(411).json({
             message: "SERVER ERROR -- SINGUP ROUTE",
-            error: err
+            error: err,
+            success: false
         });
     };
 });
@@ -122,7 +123,8 @@ router.post('/login', validateUserLogin, async (req: Request, res: Response): Pr
         console.log("Server Error: SingUp Route \nError: " + err);
         return res.status(411).json({
             message: "SERVER ERROR -- SIGNIN ROUTE",
-            error: err
+            error: err,
+            sucess: false
         });
     };
 });
@@ -133,7 +135,7 @@ router.get('/logout', authMiddleware, (req: CustomRequest, res: Response): any =
         req.user = undefined;
         return res.status(200).json({
             message: "User logged out successfully",
-            success: true,
+            success: true
         });
     };
     // no need of an else condiiton as without an req.user ( i.e the token the authMiddelware will stpo the reqest);
