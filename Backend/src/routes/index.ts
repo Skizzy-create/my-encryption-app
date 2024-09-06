@@ -1,9 +1,9 @@
 import exp from 'constants';
 import express from 'express';
 import userRoutes from './userRoutes';
-import encryptRoutes from './encryptionRoutes';
+import messageRoutes from './messagesRoutes';
 const router = express.Router();
 
 router.use('/user', userRoutes);
-router.use('/encrypt', encryptRoutes);
+router.use('/messages', messageRoutes);
 export default router;

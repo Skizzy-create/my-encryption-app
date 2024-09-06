@@ -2,7 +2,7 @@ import { createCipheriv, } from 'crypto';
 import { read, readFileSync } from 'fs';
 
 // only supports the aes-256-cbc algorithm for now.
-const encryptMessage = (algorithm: string, message: string): string => {
+const encryptMessage = (message: string, algorithm: string): string => {
     const key = Buffer.from(readFileSync('key-aes256-cbc.pem', 'utf-8'), 'base64');
     const iv = Buffer.from(readFileSync('iv-aes256-cbc.pem', 'utf-8'), 'base64');
 

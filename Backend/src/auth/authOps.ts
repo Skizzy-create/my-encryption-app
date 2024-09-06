@@ -41,8 +41,11 @@ const generateToken = (user: any, res: Response): String | any => {
 
 const verifyToken = (req: CustomRequest, res: Response): string | JwtPayload | null => {
     const authHeader: string | undefined = req.headers.authorization;
+    if (authHeader === undefined) {
+        return null;
+    }
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        console.log('Header = ', authHeader)
+        // console.log('Header = ', authHeader)
         return res.status(403).json({
             message: 'Unauthorized Access -Headers',
             success: false

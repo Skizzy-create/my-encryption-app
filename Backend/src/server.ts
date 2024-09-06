@@ -45,7 +45,7 @@ const startServer = async (): Promise<void> => {
         generateKeyandIV();
 
         // const message = 'Hare krishna Hare Krishna, Krishna krishna hare hare';
-        // const encryptedMessage = encryptMessage(supportedAlgosObj.AES256, message);
+        // const encryptedMessage = encryptMessage(message, supportedAlgosObj.AES256);
         // console.log('\nencrypted message =', encryptedMessage, '\n');
 
         // const decryptedMessage = decryptMessage(supportedAlgosObj.AES256, encryptedMessage);
