@@ -128,13 +128,30 @@ backend/
        - Requires: `qrData` (base64 string of the QR code).
        - Action: Decrypt the data and return the original message.
 
-##### 5. **Past Messages**
-   - **Message Model**
-     - Fields: `userId`, `originalMessage`, `encryptedMessage`, `algorithm`, `createdAt`.
-   - **Past Messages Route**
-     - Method: `GET /api/messages`
-     - Requires: Authenticated user.
-     - Action: Fetch and return all past encrypted messages for the user.
+## 5. Past Messages
+
+### Message Model
+
+#### Schema for Past Encrypted Messages
+* **Fields:**
+    * `userId`: The ID of the user who sent the message.
+    * `originalMessage`: The original, unencrypted message.
+    * `encryptedMessage`: The encrypted message.
+    * `algorithm`: The encryption algorithm used.
+    * `createdAt`: The timestamp of when the message was created.
+
+#### Schema for Past Decrypted Messages
+* **Fields:**
+    * `userId`: The ID of the user who sent the message.
+    * `originalMessage`: The original, unencrypted message.
+    * `dencryptedMessage`: The decrypted message.
+    * `algorithm`: The decryption algorithm used.
+    * `createdAt`: The timestamp of when the message was created.
+
+### Past Messages Route
+* **Method:** `GET /api/messages`
+* **Requires:** Authenticated user.
+* **Action:** Fetch and return all past encrypted messages for the user.
 
 ##### 6. **Frontend Development**
    - **Landing Page**

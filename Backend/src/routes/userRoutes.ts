@@ -128,6 +128,7 @@ router.post('/login', validateUserLogin, async (req: Request, res: Response): Pr
 });
 
 router.get('/logout', authMiddleware, (req: CustomRequest, res: Response): any => {
+    console.log("LogOut Route Called")
     if (req.user) {
         req.user = undefined;
         return res.status(200).json({

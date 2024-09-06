@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { userLoginSchema, userSignupSchema } from "../schemas/usersSchema";
 import { SafeParseReturnType } from "zod";
 
-const validateUserSignUp = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+const validateUserSignUp = (req: Request, res: Response, next: NextFunction): any => {
     const email = req.body.email;
     const password = req.body.password;
     const firstName = req.body.firstName;
@@ -22,7 +22,8 @@ const validateUserSignUp = async (req: Request, res: Response, next: NextFunctio
         if (!isValid.success) {
             return res.status(400).json({
                 message: "Invalid request data",
-                errors: isValid.error
+                errors: isValid.error,
+                success: false
             });
         };
         next();
@@ -30,12 +31,13 @@ const validateUserSignUp = async (req: Request, res: Response, next: NextFunctio
         console.log("Error in userSchemaValidators.ts: " + err);
         return res.status(500).json({
             message: "INTERNAL SERVER ERROR -ZOD VALIDATION USER SIGNUP",
-            error: err
+            error: err,
+            success: false
         });
     };
 };
 
-const validateUserLogin = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+const validateUserLogin = (req: Request, res: Response, next: NextFunction): any => {
     const email = req.body.email;
     const password = req.body.password;
 
@@ -51,7 +53,8 @@ const validateUserLogin = async (req: Request, res: Response, next: NextFunction
         if (!isValid.success) {
             return res.status(400).json({
                 message: "Invalid request data",
-                errors: isValid.error
+                errors: isValid.error,
+                success: false
             });
         };
         next();
@@ -59,7 +62,8 @@ const validateUserLogin = async (req: Request, res: Response, next: NextFunction
         console.log("Error in userSchemaValidators.ts: " + err);
         return res.status(500).json({
             message: "INTERNAL SERVER ERROR -ZOD VALIDATION USER LOGIN",
-            error: err
+            error: err,
+            success: false
         });
     };
 }

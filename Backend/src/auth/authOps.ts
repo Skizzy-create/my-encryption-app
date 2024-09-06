@@ -1,10 +1,13 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload, verify } from 'jsonwebtoken';
 import dotEnv from 'dotenv';
 import { Response } from 'express';
+import { CustomRequest } from './auth';
 
 dotEnv.config();
 const JWT_SECRET: string = process.env.JWT_SECRET || "";
+
+
 
 const hashPassword = async (password: String | Buffer): Promise<String | null> => {
     try {
@@ -34,11 +37,30 @@ const generateToken = (user: any, res: Response): String | any => {
         console.error("Error generating JWT:", "\n", err);
         return false;
     }
+};
 
+const verifyToken = (req: CustomRequest, res: Response): string | JwtPayload | null => {
+    const authHeader: string | undefined = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        console.log('Header = ', authHeader)
+        return res.status(403).json({
+            message: 'Unauthorized Access -Headers',
+            success: false
+        });
+    };
+    const token: string = authHeader.split(' ')[1];
+    try {
+        const decoded: string | JwtPayload = verify(token, JWT_SECRET);
+        req.user = decoded;
+        return decoded;
+    } catch (err) {
+        return null;
+    }
 }
 
 export {
     hashPassword,
     comparePassword,
-    generateToken
+    generateToken,
+    verifyToken
 }
