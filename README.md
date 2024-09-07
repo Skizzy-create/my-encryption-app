@@ -1,7 +1,7 @@
 # My Encryption App
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue)
-![Node.js](https://img.shields.io/badge/Node.js-14.x-green)
+![Node.js](https://img.shields.io/badge/Node.js-22.x-green)
 ![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
 ![Mongoose](https://img.shields.io/badge/Mongoose-6.x-brightgreen)
 ![Frontend](https://img.shields.io/badge/Frontend-React.js-orange)
