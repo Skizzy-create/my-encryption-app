@@ -11,9 +11,9 @@ interface IencryptMessages extends Document {
 
 interface IdecryptMessage extends Document {
     userId: mongoose.Schema.Types.ObjectId,
-    encryptedMessage: string,
-    decryptedMessage: string,
-    algorithm: string,
+    encryptedMessage: String,
+    decryptedMessage: String,
+    algorithm: String,
     createdAt: Date
 };
 

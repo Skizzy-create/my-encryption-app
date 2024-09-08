@@ -7,6 +7,7 @@ import { encryptMessage } from './services/encryptionService';
 import { supportedAlgos, supportedAlgosObj } from './utility/supportedAlgos';
 import { decryptMessage } from './services/decryptionService';
 import { generateKeyandIV } from './services/symetricEncryptionKeyGen';
+import { generateQRCodeText } from './services/qrCodeService';
 
 dotenv.config();
 const PORT: number = parseInt(process.env.PORT || '3000', 10);
@@ -51,6 +52,10 @@ const startServer = async (): Promise<void> => {
         // const decryptedMessage = decryptMessage(encryptedMessage, supportedAlgosObj.AES256);
         // console.log('decrypted message =', decryptedMessage, '\n');
 
+        // const trialQrText = await generateQRCodeText('Hare krishna Hare Krishna, Krishna krishna hare hare', supportedAlgosObj.AES256);
+        // console.log('QR code text =', trialQrText);
+        // const trialImg = await generateQrCodeImg(trialQrText);
+        // console.log('QR code image =', trialImg);
     } catch (err) {
         console.log("Failed to connect to the server", err);
         process.exit(1);
