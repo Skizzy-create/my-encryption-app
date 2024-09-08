@@ -7,13 +7,13 @@ import extractUserId from '../utility/extractUserId';
 import { CustomRequest } from '../auth/auth';
 import { JwtPayload } from 'jsonwebtoken';
 import mongoose from 'mongoose';
-import { QRCodeModel } from '../models/QrCode';
+import { QRCodeModel } from '../models/QRCode';
 
 const router = express.Router();
 
-router.get('/generate', validateMessageEncryptDecrypt, extractUserId, async (req: CustomRequest, res: Response) => {
-    const message: string = req.query.message as string;
-    const algo: string = req.query.algo as string
+router.post('/generate', validateMessageEncryptDecrypt, extractUserId, async (req: CustomRequest, res: Response) => {
+    const message: string = req.body.message as string;
+    const algo: string = req.body.algo as string
     let userId;
     if (req.user) {
         userId = (req.user as JwtPayload).id;
@@ -23,7 +23,7 @@ router.get('/generate', validateMessageEncryptDecrypt, extractUserId, async (req
     try {
         const encryptedMessage: string = encryptMessage(message, algo);
         const base64EncryptedMessage: string = Buffer.from(encryptedMessage, 'hex').toString('base64');
-        const qrCodeText = generateQRCodeText(base64EncryptedMessage, algo);
+        const qrCodeText = await generateQRCodeText(base64EncryptedMessage, algo);
 
         const newQRModel = await QRCodeModel.create({
             userId: userId,
