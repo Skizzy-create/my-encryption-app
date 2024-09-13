@@ -4,7 +4,7 @@ import { SafeParseReturnType } from "zod";
 
 const validateMessageEncryptDecrypt = (req: Request, res: Response, next: NextFunction): any => {
     const message: string = req.body.message;
-    const algo: string = req.body.message;
+    const algo: string = req.body.algo;
     try {
         const isValid: SafeParseReturnType<any, any> = messageEncDecSchema.safeParse({
             message,
