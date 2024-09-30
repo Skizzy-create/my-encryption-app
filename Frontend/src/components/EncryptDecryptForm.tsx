@@ -13,7 +13,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const endpoint = action === 'encrypt' ? '/api/v1/messages/encrypt' : '/api/v1/messages/decrypt';
+            const endpoint = action === 'encrypt' ? 'http://localhost:8080/api/v1/messages/encrypt' : 'http://localhost:8080/api/v1/messages/decrypt';
             const response = await axios.post(endpoint, { message, algo });
             onResult(response.data.newMessage);
         } catch (error) {
