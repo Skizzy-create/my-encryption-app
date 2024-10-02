@@ -1,4 +1,5 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import connectWithRetry from './database/database';
 import { countRequest, countTime } from './utility/logs';
@@ -18,8 +19,10 @@ const startServer = async (): Promise<void> => {
         await connectWithRetry();
         const app: Application = express();
 
+        // CORS policy for localhost:5173
+        app.use(cors({ origin: 'http://localhost:5173' })); // Allow requests from localhost:5173
+
         app.use(express.json());
-        app.use(express.urlencoded({ extended: true }));
         app.use(countRequest);
         app.use(countTime);
 

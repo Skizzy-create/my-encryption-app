@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import EncryptDecryptForm from '../components/EncryptDecryptForm';
-import QRCodeGenerator from '../components/QRCodeGenerator';
+// import QRCodeGenerator from '../components/QRCodeGenerator';
 import QRScanner from '../components/QRScanner';
-import ResultDisplay from '../components/ResultDisplay';
+// import ResultDisplay from '../components/ResultDisplay';
 
 interface MainPageProps {
     onNavigateToLanding: () => void;
@@ -31,13 +31,7 @@ const MainPage: React.FC<MainPageProps> = ({ onNavigateToLanding }) => {
             {/* Encryption/Decryption Form */}
             <EncryptDecryptForm onResult={setResult} />
 
-            {/* Display Results and QR Code */}
-            {result && (
-                <div className="mt-8 flex flex-col items-center">
-                    <ResultDisplay result={result} />
-                    <QRCodeGenerator encryptedMessage={result} />
-                </div>
-            )}
+
 
             {/* QR Code Scanner */}
             <div className="mt-12 w-full max-w-lg">
