@@ -35,6 +35,12 @@ const startServer = async (): Promise<void> => {
             });
         });
 
+        app.use('/isAlive', (req: Request, res: Response) => {
+            res.status(200).json({
+                message: 'Server is alive'
+            });
+        });
+
         // global error handler
         app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
             res.status(500).json({
