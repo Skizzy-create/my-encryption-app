@@ -31,7 +31,14 @@ const startServer = async (): Promise<void> => {
         app.get('/', (req: Request, res: Response) => {
             // later will be used to actually verify if user is logged in.
             res.status(200).json({
-                message: 'Hello World!'
+                message: `MyEncrypt - Full-Stack Encryption App
+MyEncrypt offers a simple, secure way to encrypt and decrypt messages.Enter your message, and get the encrypted result. You can also generate a QR code for easy sharing and direct decryption within the app.
+
+Express.js
+TypeScript
+BcryptJS
+Crypto
+Mongoose!`
             });
         });
 
