@@ -8,13 +8,24 @@ import { encryptMessage } from '../services/encryptionService';
 import mongoose from 'mongoose';
 import { decryptMessage } from '../services/decryptionService';
 import { Buffer } from 'buffer';  // Make sure to import Buffer
-
+import { supportedAlgosObj } from '../utility/supportedAlgos';
 const router = express.Router();
 
 router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req: CustomRequest, res: Response, next: NextFunction): Promise<any> => {
     console.log('Encrypt');
     const message: string = req.body.message;
-    const algo: string = req.body.algo;
+    const algoKey: keyof typeof supportedAlgosObj = req.body.algo;  // keyof is used to tell ts that the value is a key of the object
+
+    // Map the algoKey to the actual algorithm using supportedAlgosObj
+    const algo = supportedAlgosObj[algoKey];
+
+    if (!algo) {
+        return res.status(400).json({
+            msg: "Unsupported encryption algorithm",
+            success: false
+        });
+    }
+
     let userId;
     if (req.user) {
         userId = (req.user as JwtPayload).id;
@@ -32,7 +43,7 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
             userId,
             originalMessage: message,
             encryptedMessage: base64EncryptedMessage,
-            algorithm: algo,
+            algorithm: algoKey, // Store the key (e.g., "AES256") instead of the actual algorithm
         });
 
         console.log('encrypted Message =', newMessage);
@@ -57,10 +68,22 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
     }
 });
 
+
 router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req: CustomRequest, res: Response, next: NextFunction): Promise<any> => {
     console.log('Decrypt');
     const base64EncryptedMessage: string = req.body.message;
-    const algo = req.body.algo;
+    const algoKey: keyof typeof supportedAlgosObj = req.body.algo;  // The key from the request body (e.g., "AES256")
+
+    // Map the algoKey to the actual algorithm using supportedAlgosObj
+    const algo = supportedAlgosObj[algoKey];
+
+    if (!algo) {
+        return res.status(400).json({
+            msg: "Unsupported decryption algorithm",
+            success: false
+        });
+    }
+
     let userId;
     if (req.user) {
         userId = (req.user as JwtPayload).id;
@@ -79,7 +102,7 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
             userId,
             encryptedMessage: base64EncryptedMessage,
             decryptedMessage,
-            algorithm: algo
+            algorithm: algoKey, // Store the key (e.g., "AES256") instead of the actual algorithm
         });
 
         if (!newMessage) {
@@ -102,5 +125,6 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
         });
     }
 });
+
 
 export default router;

@@ -7,7 +7,7 @@ import mainRouter from './routes/index';
 import { encryptMessage } from './services/encryptionService';
 import { supportedAlgos, supportedAlgosObj } from './utility/supportedAlgos';
 import { decryptMessage } from './services/decryptionService';
-import { generateKeyandIV } from './services/symetricEncryptionKeyGen';
+import { generateKeyandIV, generateKeysForAllAlgos } from './services/symetricEncryptionKeyGen';
 import { generateQRCodeText } from './services/qrCodeService';
 
 dotenv.config();
@@ -20,8 +20,8 @@ const startServer = async (): Promise<void> => {
         const app: Application = express();
 
         // CORS policy for localhost:5173
-        // app.use(cors({ origin: 'http://localhost:5173' })); // Allow requests from localhost:5173
-        app.use(cors({ origin: 'https://my-encryption-app.vercel.app' })); // Allow requests from my-encryption-app.vercel.app
+        app.use(cors({ origin: 'http://localhost:5173' })); // Allow requests from localhost:5173
+        // app.use(cors({ origin: 'https://my-encryption-app.vercel.app' })); // Allow requests from my-encryption-app.vercel.app
         app.options('*', cors());
         app.use(express.json());
         app.use(countRequest);
@@ -54,7 +54,7 @@ const startServer = async (): Promise<void> => {
             console.log(`Server is running on port ${PORT}`);
         });
 
-        generateKeyandIV();
+        generateKeysForAllAlgos();
 
         // const message = 'Hare krishna Hare Krishna, Krishna krishna hare hare';
         // const encryptedMessage = encryptMessage(message, supportedAlgosObj.AES256);

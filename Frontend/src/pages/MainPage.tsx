@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EncryptDecryptForm from '../components/EncryptDecryptForm';
 // import QRCodeGenerator from '../components/QRCodeGenerator';
-import QRScanner from '../components/QRScanner';
+// import QRScanner from '../components/QRScanner';
 // import ResultDisplay from '../components/ResultDisplay';
 
 interface MainPageProps {
@@ -35,7 +35,7 @@ const MainPage: React.FC<MainPageProps> = ({ onNavigateToLanding }) => {
 
             {/* QR Code Scanner */}
             <div className="mt-12 w-full max-w-lg">
-                <QRScanner />
+                {/* <QRScanner /> */}
             </div>
         </div>
     );

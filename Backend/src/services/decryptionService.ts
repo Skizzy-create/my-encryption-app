@@ -1,14 +1,19 @@
 import { createDecipheriv } from "crypto";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 
 const decryptMessage = (message: string, algorithm: string): string => {
-    const key = Buffer.from(readFileSync('key-aes256-cbc.pem', 'utf-8'), 'base64');
-    // above we are loadign the key from the file
-    // utf-8 is the encoding of the file, base64 is the encoding of the key,
-    // utf-8 will be used to read the file, base64 will be used to convert the key to a buffer
-    const iv = Buffer.from(readFileSync('iv-aes256-cbc.pem', 'utf-8'), 'base64');
+    const key = Buffer.from(readFileSync(`key-${algorithm}.pem`, 'utf-8'), 'base64');
+    const ivPath = `iv-${algorithm}.pem`;
 
-    const decipher = createDecipheriv(algorithm, key, iv);
+    // Check if the IV file exists before reading it
+    let iv: Buffer | null = null;
+    if (existsSync(ivPath)) {
+        iv = Buffer.from(readFileSync(ivPath, 'utf-8'), 'base64');
+    }
+
+    // Create decipher with or without IV based on the algorithm
+    const decipher = iv ? createDecipheriv(algorithm, key, iv) : createDecipheriv(algorithm, key, Buffer.alloc(0));
+
     let decryptedMessage = decipher.update(message, 'hex', 'utf-8');
     decryptedMessage += decipher.final('utf-8');
 
@@ -17,4 +22,4 @@ const decryptMessage = (message: string, algorithm: string): string => {
 
 export {
     decryptMessage
-}
+};
