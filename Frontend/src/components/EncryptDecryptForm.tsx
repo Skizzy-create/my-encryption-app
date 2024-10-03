@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
 import axios from 'axios';
-// import { QRCodeCanvas } from 'qrcode.react';
-import QrScanner from 'qr-scanner'; // Import the QR scanning library
+import { QRCodeCanvas } from 'qrcode.react'; // Import QR code generator library
+import QrScanner from 'qr-scanner'; // Import QR scanning library
 
 const supportedAlgosObj = {
     'AES256': 'aes-256-cbc',
@@ -43,18 +43,19 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 action === 'encrypt'
                     ? 'https://my-encryption-app.onrender.com/api/v1/messages/encrypt'
                     : 'https://my-encryption-app.onrender.com/api/v1/messages/decrypt';
+            // http://localhost:8080/api/v1/messages/encrypt
 
             const response = await axios.post(endpoint, { message: formData.message, algo: formData.algo });
             let resultMessage = '';
 
             if (action === 'encrypt') {
-                resultMessage = `${response.data.newMessage.encryptedMessage}|${formData.algo}`;
+                resultMessage = `${response.data.newMessage.encryptedMessage}`;
             } else if (action === 'decrypt') {
                 resultMessage = response.data.newMessage.decryptedMessage;
             }
 
             setResult(resultMessage);
-            onResult(resultMessage);
+            onResult(resultMessage); // On-screen display excludes algorithm
         } catch (error) {
             console.error('Error:', error);
         }
@@ -62,8 +63,9 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
 
     const downloadTextFile = () => {
         if (result) {
+            const textWithAlgo = `${result}|${formData.algo}`;
             const element = document.createElement('a');
-            const file = new Blob([result], { type: 'text/plain' });
+            const file = new Blob([textWithAlgo], { type: 'text/plain' });
             element.href = URL.createObjectURL(file);
             element.download = 'message.txt';
             document.body.appendChild(element);
@@ -191,7 +193,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                         className="bg-gray-900 text-gray-200 p-4 rounded-lg border border-gray-600 overflow-auto max-h-32 break-words"
                         style={{ whiteSpace: 'pre-wrap' }}
                     >
-                        {result}
+                        {result} {/* Display result without algorithm */}
                     </div>
 
                     <div className="mt-4 flex space-x-4">
@@ -239,6 +241,19 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 <h2 className="text-lg text-white font-bold mt-8 mb-2">Scan a QR Code</h2>
                 <QRScanner onScan={setScannedQRResult} />
             </div>
+
+            {/* QR Code Canvas */}
+            {result && (
+                <div className="hidden">
+                    <QRCodeCanvas
+                        value={`${result}|${formData.algo}`} // Include algorithm in the QR code
+                        size={256}
+                        level={'H'}
+                        includeMargin={true}
+                        ref={qrRef}
+                    />
+                </div>
+            )}
         </form>
     );
 };
@@ -268,7 +283,7 @@ const QRScanner: React.FC<QRScannerProps> = memo(({ onScan }) => {
         };
     }, [onScan]); // Only reinitialize scanner if `onScan` changes
 
-    return <video ref={videoRef} style={{ width: '100%', height: 'auto' }} className='rounded-lg' />;
+    return <video ref={videoRef} style={{ width: '100%', height: 'auto' }} className="rounded-lg" />;
 });
 
 export default EncryptDecryptForm;
