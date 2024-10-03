@@ -21,8 +21,8 @@ const startServer = async (): Promise<void> => {
 
         // CORS policy for localhost:5173
         // app.use(cors({ origin: 'http://localhost:5173' })); // Allow requests from localhost:5173
-        app.use(cors({ origin: 'https://my-encryption-app.vercel.app/' })); // Allow requests from my-encryption-app.vercel.app
-
+        app.use(cors({ origin: 'https://my-encryption-app.vercel.app' })); // Allow requests from my-encryption-app.vercel.app
+        app.options('*', cors());
         app.use(express.json());
         app.use(countRequest);
         app.use(countTime);
