@@ -53,7 +53,7 @@ const startServer = async (): Promise<void> => {
             console.log(`Server is running on port ${PORT}`);
         });
 
-        // generateKeyandIV();
+        generateKeyandIV();
 
         // const message = 'Hare krishna Hare Krishna, Krishna krishna hare hare';
         // const encryptedMessage = encryptMessage(message, supportedAlgosObj.AES256);
