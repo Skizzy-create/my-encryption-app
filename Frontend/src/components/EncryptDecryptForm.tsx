@@ -22,8 +22,8 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
         try {
             const endpoint =
                 action === 'encrypt'
-                    ? 'http://localhost:8080/api/v1/messages/encrypt'
-                    : 'http://localhost:8080/api/v1/messages/decrypt';
+                    ? 'https://my-encryption-app.onrender.com/api/v1/messages/encrypt'
+                    : 'https://my-encryption-app.onrender.com/api/v1/messages/decrypt';
 
             const response = await axios.post(endpoint, { message, algo });
             let resultMessage = '';

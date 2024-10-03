@@ -9,7 +9,7 @@ interface MainPageProps {
 }
 
 const MainPage: React.FC<MainPageProps> = ({ onNavigateToLanding }) => {
-    const [result, setResult] = useState('');
+    const [, setResult] = useState('');
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-8 flex flex-col items-center">
