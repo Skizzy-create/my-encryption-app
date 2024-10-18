@@ -2,10 +2,43 @@ import exp from 'constants';
 import express, { Request, Response } from 'express';
 import { validateUserLogin, validateUserSignUp } from '../middlewares/userSchemaValidators';
 import { UserModel } from '../models/User';
-import { comparePassword, generateToken, hashPassword } from '../auth/authOps';
+import { comparePassword, generateToken, hashPassword, verifyToken } from '../auth/authOps';
 import { authMiddleware, CustomRequest } from '../auth/auth';
+import extractUserId from '../utility/extractUserId';
+import { JwtPayload } from 'jsonwebtoken';
 
 const router = express.Router();
+
+router.get('/me', extractUserId, async (req: CustomRequest, res: Response): Promise<any> => {
+    try {
+        const userId = (req.user as JwtPayload).id;
+        console.log("User ID = ", userId);
+        if (!userId) {
+            return res.status(400).json({
+                message: "User not found",
+                success: false
+            });
+        };
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                success: false
+            });
+        };
+        return res.status(200).json({
+            user: user,
+            success: true
+        });
+    } catch (err) {
+        console.log("Server Error: Me Route \nError: " + err);
+        return res.status(411).json({
+            message: "SERVER ERROR -- ME ROUTE",
+            error: err,
+            success: false
+        });
+    };
+});
 
 router.post('/signup', validateUserSignUp, async (req: Request, res: Response): Promise<any> => {
     const email: String = req.body.email;
@@ -90,7 +123,7 @@ router.post('/login', validateUserLogin, async (req: Request, res: Response): Pr
         })
         if (existingUser === null) {
             return res.status(411).json({
-                msg: "User not found / Credentials incorrect",
+                message: "User not found / Credentials incorrect",
                 success: false
             });
         };
@@ -98,7 +131,7 @@ router.post('/login', validateUserLogin, async (req: Request, res: Response): Pr
         const isValid = await comparePassword(password, existingUser.password);
         if (!isValid) {
             return res.status(400).json({
-                msg: "User not found / Credentials incorrect",
+                message: "User not found / Credentials incorrect",
                 success: false
             });
         }
@@ -106,7 +139,7 @@ router.post('/login', validateUserLogin, async (req: Request, res: Response): Pr
         const token = generateToken(existingUser, res);
         if (!token) {
             return res.status(400).json({
-                msg: "Error generating token",
+                message: "Error generating token",
                 success: false
             });
         };
@@ -114,7 +147,7 @@ router.post('/login', validateUserLogin, async (req: Request, res: Response): Pr
         existingUser.password = '';
 
         return res.status(200).json({
-            msg: "User logged in successfully",
+            message: "User logged in successfully",
             user: existingUser,
             token: token,
             success: true

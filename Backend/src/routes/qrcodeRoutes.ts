@@ -35,7 +35,7 @@ router.post('/generate', validateMessageEncryptDecrypt, extractUserId, async (re
 
         if (!newQRModel) {
             return res.status(500).json({
-                msg: "Failed to Generate QR",
+                message: "Failed to Generate QR",
                 success: false
             });
         };
@@ -49,7 +49,7 @@ router.post('/generate', validateMessageEncryptDecrypt, extractUserId, async (re
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            msg: "Server Error --QRCode/Generate Route",
+            message: "Server Error --QRCode/Generate Route",
             error: err,
             success: false
         });

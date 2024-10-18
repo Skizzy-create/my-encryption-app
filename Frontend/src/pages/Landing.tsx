@@ -65,7 +65,7 @@ const Landing: React.FC<LandingProps> = ({ onNavigateToMain }) => {
 
                 {/* Footer */}
                 <footer className="absolute bottom-0 p-4 text-gray-600 text-sm">
-                    <p>© 2024 MyEncrypt | Version 2.1</p>
+                    <p>© 2024 MyEncrypt | Version 2.2</p>
                 </footer>
             </div>
         </div>

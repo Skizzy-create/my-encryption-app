@@ -21,7 +21,7 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
 
     if (!algo) {
         return res.status(400).json({
-            msg: "Unsupported encryption algorithm",
+            message: "Unsupported encryption algorithm",
             success: false
         });
     }
@@ -49,7 +49,7 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
         console.log('encrypted Message =', newMessage);
         if (!newMessage) {
             return res.status(500).json({
-                msg: "Failed to encrypt the message",
+                message: "Failed to encrypt the message",
                 success: false
             });
         }
@@ -61,7 +61,7 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            msg: "Server Error --Message/Encrypt Route",
+            message: "Server Error --Message/Encrypt Route",
             error: err,
             success: false
         });
@@ -79,7 +79,7 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
 
     if (!algo) {
         return res.status(400).json({
-            msg: "Unsupported decryption algorithm",
+            message: "Unsupported decryption algorithm",
             success: false
         });
     }
@@ -107,7 +107,7 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
 
         if (!newMessage) {
             return res.status(500).json({
-                msg: "Failed to decrypt the message",
+                message: "Failed to decrypt the message",
                 success: false
             });
         };
@@ -119,7 +119,7 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
     } catch (err) {
         console.log(err);
         return res.status(500).json({
-            msg: "Server Error --Message/Decrypt Route",
+            message: "Server Error --Message/Decrypt Route",
             error: err,
             success: false
         });
