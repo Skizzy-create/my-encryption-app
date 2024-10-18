@@ -20,7 +20,7 @@ export default function SignupPage() {
     async function handleOnClick() {
         const navigate = useNavigate();
         try {
-            const response = await axios.post("http://localhost:8080/api/v1/user/signup", {
+            const response = await axios.post("https://my-encryption-app.onrender.com/api/v1/user/signup", {
                 firstName: firstName,
                 lastName: secondName,
                 email: email,
