@@ -1,6 +1,10 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { useState } from 'react';
 import Landing from './pages/Landing';
 import MainPage from './pages/MainPage';
+import SignupPage from './pages/Signup';
+import SignInPage from './pages/SignIn';
+
 const App: React.FC = () => {
   const [showLandingPage, setShowLandingPage] = useState(true);
 
@@ -13,13 +17,20 @@ const App: React.FC = () => {
   };
 
   return (
-    <div>
-      {showLandingPage ? (
-        <Landing onNavigateToMain={handleNavigateToMain} />
-      ) : (
-        <MainPage onNavigateToLanding={handleNavigateToLanding} />
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            showLandingPage ?
+              <Landing onNavigateToMain={handleNavigateToMain} /> :
+              <MainPage onNavigateToLanding={handleNavigateToLanding} />
+          }
+        />
+        <Route path="/SignUp" element={<SignupPage />} />
+        <Route path="/SignIn" element={<SignInPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

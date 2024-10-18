@@ -1,5 +1,6 @@
 import React from "react";
 import { FaGithub, FaSignInAlt, FaUserPlus, FaLock } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { Velustro } from "uvcanvas";
 
 interface LandingProps {
@@ -7,6 +8,7 @@ interface LandingProps {
 }
 
 const Landing: React.FC<LandingProps> = ({ onNavigateToMain }) => {
+    const navigate = useNavigate();
     return (
         <div className="relative min-h-screen w-full">
             <div className="absolute inset-0 z-0">
@@ -19,11 +21,16 @@ const Landing: React.FC<LandingProps> = ({ onNavigateToMain }) => {
                 {/* Header */}
                 <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center">
                     <div className="flex space-x-4">
-                        <button className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition-all hover:from-blue-600 hover:to-blue-800 shadow-lg">
+                        <button
+                            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition-all hover:from-blue-600 hover:to-blue-800 shadow-lg"
+                            onClick={() => navigate("/SignUp")}
+                        >
                             <FaUserPlus />
                             <span>Sign Up</span>
                         </button>
-                        <button className="bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition-all hover:from-green-600 hover:to-green-800 shadow-lg">
+                        <button className="bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition-all hover:from-green-600 hover:to-green-800 shadow-lg"
+                            onClick={() => navigate("/SignIn")}
+                        >
                             <FaSignInAlt />
                             <span>Login</span>
                         </button>
@@ -58,7 +65,7 @@ const Landing: React.FC<LandingProps> = ({ onNavigateToMain }) => {
 
                 {/* Footer */}
                 <footer className="absolute bottom-0 p-4 text-gray-600 text-sm">
-                    <p>© 2024 MyEncrypt | Version 1.0</p>
+                    <p>© 2024 MyEncrypt | Version 2.1</p>
                 </footer>
             </div>
         </div>
