@@ -16,9 +16,9 @@ export default function SignupPage() {
     const [secondName, setSecondName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const navigate = useNavigate();
 
     async function handleOnClick() {
-        const navigate = useNavigate();
         try {
             const response = await axios.post("https://my-encryption-app.onrender.com/api/v1/user/signup", {
                 firstName: firstName,
@@ -30,7 +30,7 @@ export default function SignupPage() {
             navigate("/");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                alert(error.response.data);
+                alert(error.response.data.message);
             } else {
                 alert("An unexpected error occurred");
             }
@@ -42,10 +42,10 @@ export default function SignupPage() {
             handleOnClick();
         }
     }
-    const navigate = useNavigate();
+
     return (
-        <div className="min-h-screen min-w-full">
-            <div className="absolute inset-0 z-0" onKeyPress={handleKeyPress}>
+        <div className="min-h-screen min-w-full" onKeyPress={handleKeyPress}>
+            <div className="absolute inset-0 z-0">
                 <Velustro />
                 <Header Heading="My Encrypt" />
                 <button
@@ -65,33 +65,25 @@ export default function SignupPage() {
                             Message="First Name"
                             placeholder="John"
                             id="firstName"
-                            onChange={(e) => {
-                                setFirstName(e.target.value);
-                            }}
+                            onChange={(e) => setFirstName(e.target.value)}
                         />
                         <CustomInput
                             Message="Second Name"
                             placeholder="Doe"
                             id="secondName"
-                            onChange={(e) => {
-                                setSecondName(e.target.value);
-                            }}
+                            onChange={(e) => setSecondName(e.target.value)}
                         />
                         <CustomInput
                             Message="Email"
                             placeholder="john.doe@example.com"
                             id="email"
-                            onChange={(e) => {
-                                setEmail(e.target.value);
-                            }}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <CustomInput
                             Message="Password"
                             placeholder="********"
                             id="password"
-                            onChange={(e) => {
-                                setPassword(e.target.value);
-                            }}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <Button handleOnClick={handleOnClick} label="SignUp" />
                         <BottomWarning to="/SignIn" linkText="SignIn" Text="Already have an account?" />
