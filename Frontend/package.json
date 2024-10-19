@@ -11,9 +11,10 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
+    "@lottiefiles/dotlottie-react": "^0.9.1",
     "@zxing/browser": "^0.1.5",
     "axios": "^1.7.7",
-    "framer-motion": "^11.9.0",
+    "framer-motion": "^11.11.9",
     "jwt-decode": "^4.0.0",
     "qr-scanner": "^1.4.2",
     "qrcode.react": "^4.0.1",

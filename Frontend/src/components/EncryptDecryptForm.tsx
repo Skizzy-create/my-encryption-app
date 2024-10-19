@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; // Import QR code generator library
 import QrScanner from 'qr-scanner'; // Import QR scanning library
+import QRScanner from './QRScanner';
 
 const supportedAlgosObj = {
     'AES256': 'aes-256-cbc',
@@ -43,7 +44,6 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 action === 'encrypt'
                     ? 'https://my-encryption-app.onrender.com/api/v1/messages/encrypt'
                     : 'https://my-encryption-app.onrender.com/api/v1/messages/decrypt';
-            // http://localhost:8080/api/v1/messages/encrypt
 
             const response = await axios.post(endpoint, { message: formData.message, algo: formData.algo });
             let resultMessage = '';
@@ -141,9 +141,9 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
     }, [scannedQRResult]);
 
     return (
-        <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-lg space-y-6">
+        <form onSubmit={handleSubmit} className="bg-white bg-opacity-60 p-8 rounded-lg shadow-lg w-full max-w-lg space-y-6">
             <div>
-                <label className="block text-gray-200 font-semibold mb-2">Message</label>
+                <label className="block text-gray-700 font-semibold mb-2">Message</label>
                 <textarea
                     className="w-full p-3 bg-gray-900 text-gray-200 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                     value={formData.message}
@@ -154,7 +154,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
             </div>
 
             <div>
-                <label className="block text-gray-200 font-semibold mb-2">Algorithm</label>
+                <label className="block text-gray-700 font-semibold mb-2">Algorithm</label>
                 <select
                     className="w-full p-3 bg-gray-900 text-gray-200 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                     value={formData.algo}
@@ -172,7 +172,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 <button
                     type="submit"
                     onClick={() => setAction('encrypt')}
-                    className="flex-1 py-2 px-4 rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors focus:outline-none focus:ring-2 focus:ring-teal-400"
+                    className="flex-1 py-2 px-4 rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 text-white hover:bg-teal-600 transition-all focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                     Encrypt
                 </button>
@@ -180,7 +180,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 <button
                     type="submit"
                     onClick={() => setAction('decrypt')}
-                    className="flex-1 py-2 px-4 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-red-400"
+                    className="flex-1 py-2 px-4 rounded-lg bg-gradient-to-br from-red-500 to-pink-500 text-white hover:bg-red-600 transition-all focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     Decrypt
                 </button>
@@ -188,7 +188,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
 
             {result && (
                 <div className="mt-6">
-                    <label className="block text-gray-200 font-semibold mb-2">Result</label>
+                    <label className="block text-gray-700 font-semibold mb-2">Result</label>
                     <div
                         className="bg-gray-900 text-gray-200 p-4 rounded-lg border border-gray-600 overflow-auto max-h-32 break-words"
                         style={{ whiteSpace: 'pre-wrap' }}
@@ -200,7 +200,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                         <button
                             onClick={downloadTextFile}
                             type="button"
-                            className="py-2 px-4 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="py-2 px-4 rounded-lg bg-gradient-to-br from-blue-500 to-teal-500 text-white hover:bg-blue-600 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             Download Text
                         </button>
@@ -208,7 +208,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                         <button
                             onClick={downloadQR}
                             type="button"
-                            className="py-2 px-4 rounded-lg bg-green-500 text-white hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400"
+                            className="py-2 px-4 rounded-lg bg-gradient-to-br from-green-500 to-teal-500 text-white hover:bg-green-600 transition-all focus:outline-none focus:ring-2 focus:ring-green-500"
                         >
                             Download QR
                         </button>
@@ -216,74 +216,58 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                         <button
                             onClick={copyToClipboard}
                             type="button"
-                            className="py-2 px-4 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                            className="py-2 px-4 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 text-white hover:bg-yellow-600 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-500"
                         >
                             Copy to Clipboard
                         </button>
                     </div>
 
-                    {copySuccess && <p className="mt-2 text-green-400">{copySuccess}</p>}
-                </div>
-            )}
+                    {copySuccess && <p className="mt-2 text-green-500 font-semibold">{copySuccess}</p>}
 
-            <div className="mt-6">
-                <label className="block text-gray-200 font-semibold mb-2">Upload QR Code</label>
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleQRUpload}
-                    className="block w-full text-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-blue-500 file:text-white hover:file:bg-blue-600"
-                />
-            </div>
-
-            <div className="mt-6">
-                <h2 className="text-lg text-white font-bold mt-8 mb-2">Scan a QR Code</h2>
-                <QRScanner onScan={setScannedQRResult} />
-            </div>
-
-            {/* QR Code Canvas */}
-            {result && (
-                <div className="hidden">
                     <QRCodeCanvas
-                        value={`${result}|${formData.algo}`} // Include algorithm in the QR code
-                        size={256}
-                        level={'H'}
-                        includeMargin={true}
+                        value={`${result}|${formData.algo}`}
                         ref={qrRef}
+                        size={150}
+                        className="mt-4 mx-auto"
+                        includeMargin
                     />
                 </div>
             )}
+
+            {/* File upload for QR */}
+            <div className="mt-6">
+                <label className="block text-gray-700 font-semibold mb-2">Upload QR Code</label>
+                <div className="relative">
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleQRUpload}
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="flex items-center justify-between py-2 px-4 border border-gray-300 bg-white rounded-lg cursor-pointer hover:bg-gray-50">
+                        <span className="text-gray-700">Choose File</span>
+                        <svg
+                            className="w-5 h-5 text-gray-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+
+            {/* <QRScanner onScan={setScannedQRResult} /> */}
         </form>
     );
 };
 
-// QRScanner Component
-interface QRScannerProps {
-    onScan: (result: string) => void;
-}
 
-const QRScanner: React.FC<QRScannerProps> = memo(({ onScan }) => {
-    const videoRef = useRef<HTMLVideoElement>(null);
 
-    useEffect(() => {
-        let scanner: QrScanner | null = null;
 
-        if (videoRef.current) {
-            scanner = new QrScanner(videoRef.current, (result) => {
-                onScan(result);
-            });
-            scanner.start(); // Start the scanner when the component mounts
-        }
-
-        return () => {
-            if (scanner) {
-                scanner.stop(); // Stop the scanner when the component unmounts
-            }
-        };
-    }, [onScan]); // Only reinitialize scanner if `onScan` changes
-
-    return <video ref={videoRef} style={{ width: '100%', height: 'auto' }} className="rounded-lg" />;
-});
 
 export default EncryptDecryptForm;

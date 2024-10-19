@@ -1,34 +1,21 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import React, { useState } from 'react';
-import Landing from './pages/Landing';
-import MainPage from './pages/MainPage';
 import SignupPage from './pages/Signup';
 import SignInPage from './pages/SignIn';
+import Landing from "./pages/Landing";
+import MainPage from "./pages/MainPage";
+import Trial from "./pages/Trial";
+import MainPage2 from "./components/MainPage2";
 
 const App: React.FC = () => {
-  const [showLandingPage, setShowLandingPage] = useState(true);
-
-  const handleNavigateToMain = () => {
-    setShowLandingPage(false);
-  };
-
-  const handleNavigateToLanding = () => {
-    setShowLandingPage(true);
-  };
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            showLandingPage ?
-              <Landing onNavigateToMain={handleNavigateToMain} /> :
-              <MainPage onNavigateToLanding={handleNavigateToLanding} />
-          }
-        />
+        <Route path="/" element={<Landing />} />
+        <Route path="/MainPage" element={<MainPage2 />} />
         <Route path="/SignUp" element={<SignupPage />} />
         <Route path="/SignIn" element={<SignInPage />} />
+        <Route path="/trial" element={<Trial />} />
       </Routes>
     </BrowserRouter>
   );

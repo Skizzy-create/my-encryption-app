@@ -1,35 +1,51 @@
-import React, { useEffect } from 'react';
-import QrScanner from 'qr-scanner';
+import QrScanner from "qr-scanner";
+import { memo, useEffect, useRef, useState } from "react";
 
+// QR Scanner Component
 interface QRScannerProps {
     onScan: (result: string) => void;
 }
 
-const QRScanner: React.FC<QRScannerProps> = ({ onScan }) => {
-    const videoRef = React.useRef<HTMLVideoElement>(null);
+const QRScanner: React.FC<QRScannerProps> = memo(({ onScan }) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const videoElem = videoRef.current;
-        if (!videoElem) return;
+        let scanner: QrScanner | null = null;
 
-        const qrScanner = new QrScanner(
-            videoElem,
-            (result) => onScan(result.data), // Call the onScan prop when a QR code is detected
-            { preferredCamera: 'environment' }
-        );
+        if (videoRef.current) {
+            scanner = new QrScanner(
+                videoRef.current,
+                (result) => onScan(result.data),
+                {
+                    onDecodeError: (err) =>
+                        setError(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`), // Handle decoding errors
+                    highlightScanRegion: false, // Disable scan region outline (yellow borders)
+                    highlightCodeOutline: true, // Keep the QR code outline visible
+                }
+            );
 
-        qrScanner.start();
+            // Start the scanner and handle any errors
+            scanner.start().catch((err) => {
+                setError('Camera access denied or not available');
+                console.error('Camera error:', err);
+            });
+        }
 
         return () => {
-            qrScanner.stop();
+            if (scanner) {
+                scanner.stop();
+            }
         };
     }, [onScan]);
 
     return (
-        <div>
-            <video ref={videoRef} style={{ width: '100%' }} />
+        <div className="mt-4">
+            {error && <p className="text-red-500">{error}</p>}
+            <video ref={videoRef} className="w-full rounded-lg" style={{ height: 'auto' }} />
         </div>
     );
-};
+});
+
 
 export default QRScanner;
