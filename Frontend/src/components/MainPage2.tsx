@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import verifyUserAuthentication from '../util/verifyUser';
 import PopUp from './PopUp';
 import Loading from '../pages/Loading';
+import { setTimeoutTime } from '../util/constants';
 
 const MainPage2 = () => {
     const [, setResult] = useState('');
@@ -21,7 +22,7 @@ const MainPage2 = () => {
             } else {
                 setShowWarning(true);
             }
-            setLoading(false); // Update loading state immediately after verification is complete
+            setTimeout(() => setLoading(false), setTimeoutTime);
         };
         verifyAuth();
     }, [navigate]);

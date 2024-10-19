@@ -29,7 +29,7 @@ export default function SignInPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            axios.get("http://localhost:8080/api/v1/user/me", {
+            axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -50,21 +50,23 @@ export default function SignInPage() {
 
     async function handleOnClick() {
         try {
-            const response = await axios.post("http://localhost:8080/api/v1/user/login", {
+            const response = await axios.post("https://my-encryption-app.onrender.com/api/v1/user/login", {
                 email: email,
                 password: password
             });
             localStorage.setItem("token", response.data.token);
-            navigate("/MainPage");
+            setPopupMessage("Login successful! Redirecting...");
+            setPopupLabel("Welcome!");
+            setIsGreenPopUpOpen(true);
+
+            setTimeout(() => navigate("/MainPage"), 800);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 let errorMessage = "";
 
-                // Check if there are specific issues
                 if (error.response.data.errors && error.response.data.errors.issues) {
                     errorMessage = error.response.data.errors.issues.map((issue: any) => issue.message).join(", ");
                 } else {
-                    // Otherwise, use the general message
                     errorMessage = error.response.data.message;
                 }
 
@@ -74,11 +76,10 @@ export default function SignInPage() {
                 setPopupLabel(ERROR_LABEL);
                 setPopupMessage("Login failed. Please check your username or password.");
             }
+
             setIsPopUpOpen(true);
         }
     }
-
-
 
     function handleClose() {
         setIsPopUpOpen(false);

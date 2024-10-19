@@ -31,7 +31,7 @@ export default function SignupPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            axios.get("http://localhost:8080/api/v1/user/me", {
+            axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -52,27 +52,37 @@ export default function SignupPage() {
 
     async function handleOnClick() {
         try {
-            const response = await axios.post("http://localhost:8080/api/v1/user/signup", {
+            const response = await axios.post("https://my-encryption-app.onrender.com/api/v1/user/signup", {
                 firstName: firstName,
                 lastName: secondName,
                 email: email,
                 password: password
             });
             localStorage.setItem("token", response.data.token);
-            navigate("/MainPage");
+            setPopupMessage("Singup successful! Redirecting...");
+            setPopupLabel("Welcome!");
+            setIsGreenPopUpOpen(true);
+            setTimeout(() => navigate("/MainPage"), 800);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                const errorMessage = error.response.data.errors.issues.map((issue: any) => issue.message).join(", ");
+                let errorMessage = "";
+
+                if (error.response.data.errors && error.response.data.errors.issues) {
+                    errorMessage = error.response.data.errors.issues.map((issue: any) => issue.message).join(", ");
+                } else {
+                    errorMessage = error.response.data.message;
+                }
+
                 setPopupLabel(ERROR_LABEL);
                 setPopupMessage(errorMessage);
             } else {
                 setPopupLabel(ERROR_LABEL);
-                setPopupMessage("An error occurred. Please try again later.");
+                setPopupMessage("Login failed. Please check your username or password.");
             }
+
             setIsPopUpOpen(true);
         }
     }
-
 
     function handleClose() {
         setIsPopUpOpen(false);
