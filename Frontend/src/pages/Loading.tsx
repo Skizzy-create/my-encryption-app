@@ -22,10 +22,10 @@ export default function Loading() {
                 <div className="flex flex-row items-center ">
                     <p className="text-4xl text-gray-300">Verifying authentication...</p>
                     <DotLottieReact
-                        src="../../public/loading2.lottie"
+                        src="/loading2.lottie"
                         loop
                         autoplay
-                        className="w-48 h-48" // Added margin below the animation
+                        className="w-48 h-48 z-10" // Added margin below the animation
                     />
                 </div>
             </div>
