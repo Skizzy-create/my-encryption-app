@@ -1,13 +1,11 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import SignupPage from './pages/Signup';
 import SignInPage from './pages/SignIn';
 import Landing from "./pages/Landing";
-import MainPage from "./pages/MainPage";
 import Trial from "./pages/Trial";
 import MainPage2 from "./components/MainPage2";
 
 const App: React.FC = () => {
-
   return (
     <BrowserRouter>
       <Routes>
@@ -16,6 +14,8 @@ const App: React.FC = () => {
         <Route path="/SignUp" element={<SignupPage />} />
         <Route path="/SignIn" element={<SignInPage />} />
         <Route path="/trial" element={<Trial />} />
+        {/* Catch-all route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
