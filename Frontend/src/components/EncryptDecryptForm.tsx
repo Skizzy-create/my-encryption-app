@@ -5,7 +5,6 @@ import QrScanner from 'qr-scanner'; // Import QR scanning library
 import QRScanner from './QRScanner';
 import { supportedAlgosObj } from '../util/supportedAlgos';
 
-
 interface FormProps {
     onResult: (result: string) => void;
 }
@@ -109,6 +108,23 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
         setAction('decrypt');
     };
 
+    const handleTextFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const fileContent = reader.result as string;
+            const [message, algo] = fileContent.split('|');
+
+            if (message && supportedAlgosObj[algo as keyof typeof supportedAlgosObj]) {
+                setFormData({ message, algo });
+                setAction('encrypt');
+            }
+        };
+        reader.readAsText(file);
+    };
+
     const copyToClipboard = () => {
         if (result) {
             navigator.clipboard.writeText(result)
@@ -210,22 +226,20 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                             type="button"
                             className="py-2 px-4 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 text-white hover:bg-yellow-600 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-500"
                         >
-                            Copy to Clipboard
+                            {copySuccess || 'Copy to Clipboard'}
                         </button>
                     </div>
-
-                    {copySuccess && <p className="mt-2 text-green-500 font-semibold">{copySuccess}</p>}
                 </div>
             )}
 
             <div className="mt-6">
-                <label className="block text-gray-700 font-semibold mb-2">Upload QR Code</label>
+                <label className="block text-gray-700 font-semibold mb-2">Upload Text File (Format: message|algo)</label>
                 <div className="relative">
                     <input
                         type="file"
                         ref={fileInputRef}
-                        onChange={handleQRUpload}
-                        accept="image/*"
+                        accept=".txt"
+                        onChange={handleTextFileUpload} // Add your text file upload handler here
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex items-center justify-between py-2 px-4 border border-gray-300 bg-white rounded-lg cursor-pointer hover:bg-gray-50">
@@ -243,26 +257,47 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 </div>
             </div>
 
-            {/* QR Scanner Toggle Button */}
             <div className="mt-6">
-                <label className="block text-gray-700 font-semibold mb-2">QR Scanner</label>
+                <label className="block text-gray-700 font-semibold mb-2">Upload QR Code</label>
+                <div className="relative">
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleQRUpload} // Add your QR upload handler here
+                        accept="image/*"
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="flex items-center justify-between py-2 px-4 border border-gray-300 bg-white rounded-lg">
+                        <span className="text-gray-700">Choose File</span>
+                        <svg
+                            className="w-5 h-5 text-gray-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+
+            <div className="mt-6">
                 <button
                     onClick={toggleQRScanner}
                     type="button"
-                    className={`py-2 px-4 rounded-lg ${isQRScannerActive ? 'bg-red-500' : 'bg-green-500'} text-white hover:bg-opacity-80 transition-all focus:outline-none`}
+                    className={`py-2 px-4 rounded-lg ${isQRScannerActive ? 'bg-red-500' : 'bg-green-500'} text-white hover:bg-${isQRScannerActive ? 'red-600' : 'green-600'} transition-all focus:outline-none focus:ring-2 focus:ring-${isQRScannerActive ? 'red-500' : 'green-500'}`}
                 >
-                    {isQRScannerActive ? 'Turn Off Scanner' : 'Turn On Scanner'}
+                    {isQRScannerActive ? 'Stop QR Scanner' : 'Start QR Scanner'}
                 </button>
+
+                {isQRScannerActive && <QRScanner onScan={setScannedQRResult} />}
             </div>
 
-            {/* Conditionally render QRScanner */}
-            {isQRScannerActive && <QRScanner onScan={setScannedQRResult} />}
-
-            {result && (
-                <div className="mt-4">
-                    <QRCodeCanvas value={`${result}|${formData.algo}`} size={200} />
-                </div>
-            )}
+            <div className="mt-6">
+                {result && <QRCodeCanvas value={`${result}|${formData.algo}`} size={256} ref={qrRef} />}
+            </div>
         </form>
     );
 };

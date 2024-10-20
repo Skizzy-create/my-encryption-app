@@ -138,7 +138,7 @@ export default function SignupPage() {
                             id="password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <Button handleOnClick={handleOnClick} label="SignUp" />
+                        <Button handleOnClick={handleOnClick} label="SignUp" id="SignUp" />
                         <BottomWarning to="/SignIn" linkText="SignIn" Text="Already have an account?" />
                         <Footer />
                     </div>

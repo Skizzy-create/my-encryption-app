@@ -1,6 +1,7 @@
 interface ButtonProps {
     handleOnClick: () => void;
     label: string;
+    id: string;
 }
 
 export default function Button({ handleOnClick, label }: ButtonProps) {
