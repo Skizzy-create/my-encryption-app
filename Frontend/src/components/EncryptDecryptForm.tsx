@@ -3,21 +3,8 @@ import axios from 'axios';
 import { QRCodeCanvas } from 'qrcode.react'; // Import QR code generator library
 import QrScanner from 'qr-scanner'; // Import QR scanning library
 import QRScanner from './QRScanner';
+import { supportedAlgosObj } from '../util/supportedAlgos';
 
-const supportedAlgosObj = {
-    'AES256': 'aes-256-cbc',
-    'AES192': 'aes-192-cbc',
-    'AES128': 'aes-128-cbc',
-    'DES-EDE': 'des-ede-cbc',
-    'DES-EDE3': 'des-ede3-cbc',
-    'CAMELLIA-128': 'camellia-128-cbc',
-    'CAMELLIA-192': 'camellia-192-cbc',
-    'CAMELLIA-256': 'camellia-256-cbc',
-    'ARIA-128': 'aria-128-cbc',
-    'ARIA-192': 'aria-192-cbc',
-    'ARIA-256': 'aria-256-cbc',
-    'SM4': 'sm4-cbc',
-} as const;
 
 interface FormProps {
     onResult: (result: string) => void;
@@ -35,6 +22,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [copySuccess, setCopySuccess] = useState('');
     const [scannedQRResult, setScannedQRResult] = useState('');
+    const [isQRScannerActive, setIsQRScannerActive] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -140,6 +128,10 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
         }
     }, [scannedQRResult]);
 
+    const toggleQRScanner = () => {
+        setIsQRScannerActive((prev) => !prev);
+    };
+
     return (
         <form onSubmit={handleSubmit} className="bg-white bg-opacity-60 p-8 rounded-lg shadow-lg w-full max-w-lg space-y-6">
             <div>
@@ -193,7 +185,7 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                         className="bg-gray-900 text-gray-200 p-4 rounded-lg border border-gray-600 overflow-auto max-h-32 break-words"
                         style={{ whiteSpace: 'pre-wrap' }}
                     >
-                        {result} {/* Display result without algorithm */}
+                        {result}
                     </div>
 
                     <div className="mt-4 flex space-x-4">
@@ -223,18 +215,9 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                     </div>
 
                     {copySuccess && <p className="mt-2 text-green-500 font-semibold">{copySuccess}</p>}
-
-                    <QRCodeCanvas
-                        value={`${result}|${formData.algo}`}
-                        ref={qrRef}
-                        size={150}
-                        className="mt-4 mx-auto"
-                        includeMargin
-                    />
                 </div>
             )}
 
-            {/* File upload for QR */}
             <div className="mt-6">
                 <label className="block text-gray-700 font-semibold mb-2">Upload QR Code</label>
                 <div className="relative">
@@ -260,14 +243,28 @@ const EncryptDecryptForm: React.FC<FormProps> = ({ onResult }) => {
                 </div>
             </div>
 
+            {/* QR Scanner Toggle Button */}
+            <div className="mt-6">
+                <label className="block text-gray-700 font-semibold mb-2">QR Scanner</label>
+                <button
+                    onClick={toggleQRScanner}
+                    type="button"
+                    className={`py-2 px-4 rounded-lg ${isQRScannerActive ? 'bg-red-500' : 'bg-green-500'} text-white hover:bg-opacity-80 transition-all focus:outline-none`}
+                >
+                    {isQRScannerActive ? 'Turn Off Scanner' : 'Turn On Scanner'}
+                </button>
+            </div>
 
-            {/* <QRScanner onScan={setScannedQRResult} /> */}
+            {/* Conditionally render QRScanner */}
+            {isQRScannerActive && <QRScanner onScan={setScannedQRResult} />}
+
+            {result && (
+                <div className="mt-4">
+                    <QRCodeCanvas value={`${result}|${formData.algo}`} size={200} />
+                </div>
+            )}
         </form>
     );
 };
-
-
-
-
 
 export default EncryptDecryptForm;
