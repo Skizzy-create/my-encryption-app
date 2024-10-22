@@ -29,7 +29,7 @@ export default function SignInPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
+            axios.get("http://localhost:5173/api/v1/user/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -124,7 +124,7 @@ export default function SignInPage() {
                             id="password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <Button handleOnClick={handleOnClick} label="Signin" />
+                        <Button handleOnClick={handleOnClick} label="Signin" id="Signin" />
                         <BottomWarning to="/SignUp" linkText="SignUp" Text="Don't have an account?" />
                         <Footer />
                     </div>

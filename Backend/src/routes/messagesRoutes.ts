@@ -33,18 +33,23 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
         userId = new mongoose.Types.ObjectId('000000000000000000000000');
     }
     try {
+        console.log('userId =', userId);
+
         // Encrypt the message
         const encryptedMessage: string = encryptMessage(message, algo);
 
         // Convert encrypted message from hex to base64 for storage
         const base64EncryptedMessage: string = Buffer.from(encryptedMessage, 'hex').toString('base64');
 
+        console.log('userId before storing in DB:', userId);
+
         const newMessage = await EncryptMessageModel.create({
             userId,
             originalMessage: message,
             encryptedMessage: base64EncryptedMessage,
-            algorithm: algoKey, // Store the key (e.g., "AES256") instead of the actual algorithm
+            algorithm: algoKey,
         });
+
 
         console.log('encrypted Message =', newMessage);
         if (!newMessage) {
