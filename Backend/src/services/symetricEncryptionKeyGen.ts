@@ -1,6 +1,7 @@
 import { randomBytes } from "crypto";
 import { writeFileSync } from "fs";
 import { supportedAlgosObj } from "../utility/supportedAlgos";
+import { existsSync } from "fs";
 // Utility to determine key and IV sizes for each algorithm
 const getKeyAndIvSize = (algorithm: string): { keySize: number; ivSize: number } => {
     switch (algorithm) {
@@ -50,7 +51,14 @@ const generateKeyandIV = (algorithm: string): void => {
 
 const generateKeysForAllAlgos = (): void => {
     Object.values(supportedAlgosObj).forEach((algo) => {
-        generateKeyandIV(algo);
+        const keyFile = `key-${algo}.pem`;
+        const ivFile = `iv-${algo}.pem`;
+
+        if (!existsSync(keyFile) || !existsSync(ivFile)) {
+            generateKeyandIV(algo);
+        } else {
+            console.log(`${algo} key and IV already exist.`);
+        }
     });
 };
 

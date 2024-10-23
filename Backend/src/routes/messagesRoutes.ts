@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { validateMessageEncryptDecrypt } from '../middlewares/messagesSchemaValidators';
 import extractUserId from '../utility/extractUserId';
-import { CustomRequest } from '../auth/auth';
+import { authMiddleware, CustomRequest } from '../auth/auth';
 import { JwtPayload } from 'jsonwebtoken';
 import { DecryptMessageModel, EncryptMessageModel } from '../models/Message';
 import { encryptMessage } from '../services/encryptionService';
@@ -51,7 +51,7 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
         });
 
 
-        console.log('encrypted Message =', newMessage);
+        // console.log('encrypted Message =', newMessage);
         if (!newMessage) {
             return res.status(500).json({
                 message: "Failed to encrypt the message",
@@ -101,7 +101,7 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
 
         // Decrypt the message
         const decryptedMessage = decryptMessage(encryptedMessage, algo);
-        console.log('decrypted message =', decryptedMessage);
+        // console.log('decrypted message =', decryptedMessage);
 
         const newMessage = await DecryptMessageModel.create({
             userId,
@@ -131,5 +131,44 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
     }
 });
 
+router.get('/history', authMiddleware, async (req: CustomRequest, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const userId = (req.user as JwtPayload).id;
+        const encryptedMessages = await EncryptMessageModel.find({ userId });
+        const decryptedMessages = await DecryptMessageModel.find({ userId });
+        // we will only encrypted message, alog and created at
+        // we will only decrypted message, alog and created at
+
+        let encryptPayload = encryptedMessages.map((message) => {
+            return {
+                message: message.encryptedMessage,
+                algo: message.algorithm,
+                createdAt: message.createdAt
+            };
+        });
+
+        let decryptPayload = decryptedMessages.map((message) => {
+            return {
+                message: message.decryptedMessage,
+                algo: message.algorithm,
+                createdAt: message.createdAt
+            };
+        });
+
+        return res.status(200).json({
+            encryptedMessages: encryptPayload,
+            decryptedMessages: decryptPayload,
+            success: true
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Server Error --Message/History Route",
+            error: err,
+            success: false
+        });
+    }
+});
 
 export default router;
