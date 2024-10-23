@@ -1,8 +1,7 @@
 import axios from "axios";
-import { NavigateFunction } from "react-router-dom";
 import { setTimeoutTime } from "./constants";
 
-const verifyUserAuthentication = async (navigate: NavigateFunction) => {
+const verifyUserAuthentication = async () => {
     try {
         const response = await axios.get("http://localhost:8080/api/v1/user/me", {
             headers: {
