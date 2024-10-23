@@ -29,7 +29,7 @@ export default function SignInPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            axios.get("http://localhost:5173/api/v1/user/me", {
+            axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
