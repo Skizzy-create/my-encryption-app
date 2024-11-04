@@ -1,4 +1,4 @@
-import HistoryCard from "../components/historyCard";
+import HistoryCard from "../components/HistoryCard";
 
 const Trial = () => {
     return (

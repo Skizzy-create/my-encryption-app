@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import HistoryCard from "../components/historyCard";
+import HistoryCard from "../components/HistoryCard";
 
 const Trial = () => {
     const navigate = useNavigate();
