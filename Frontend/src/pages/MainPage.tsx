@@ -12,7 +12,7 @@ const MainPage = () => {
 
     useEffect(() => {
         const verifyAuth = async () => {
-            await verifyUserAuthentication(navigate);
+            await verifyUserAuthentication();
             setTimeout(() => {
                 setLoading(false);
             }, setTimeoutTime);

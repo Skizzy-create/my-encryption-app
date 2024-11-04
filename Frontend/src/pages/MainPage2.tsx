@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import EncryptDecryptForm from './EncryptDecryptForm';
+import EncryptDecryptForm from '../components/EncryptDecryptForm';
 import { useNavigate } from 'react-router-dom';
 import verifyUserAuthentication from '../util/verifyUser';
-import PopUp from './PopUp';
-import Loading from '../pages/Loading';
+import PopUp from '../components/PopUp';
+import Loading from './Loading';
 import { setTimeoutTime } from '../util/constants';
 
 const MainPage2 = () => {
@@ -16,7 +16,7 @@ const MainPage2 = () => {
 
     useEffect(() => {
         const verifyAuth = async () => {
-            const authenticatedUser = await verifyUserAuthentication(navigate);
+            const authenticatedUser = await verifyUserAuthentication();
             if (authenticatedUser) {
                 setUser(authenticatedUser);
             } else {
