@@ -3,7 +3,7 @@ import { setTimeoutTime } from "./constants";
 
 const verifyUserAuthentication = async () => {
     try {
-        const response = await axios.get("https://my-encryption-app.vercel.app/api/v1/user/me", {
+        const response = await axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }

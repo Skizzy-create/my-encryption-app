@@ -19,8 +19,8 @@ const startServer = async (): Promise<void> => {
         await connectWithRetry();
         const app: Application = express();
 
-        // CORS policy for localhost:5173
-        app.use(cors({ origin: ['http://localhost:5173', 'https://my-encryption-app.vercel.app'] })); // Allow requests from localhost:5173 and my-encryption-app.vercel.app
+        // CORS policy for localhost:5173, https://my-encryption-app.onrender.com
+        app.use(cors({ origin: ['http://localhost:5173', 'https://my-encryption-app.onrender.com'] })); // Allow requests from localhost:5173 and my-encryption-app.vercel.app
         app.options('*', cors());
         app.use(express.json());
         app.use(countRequest);

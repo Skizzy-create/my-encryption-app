@@ -14,7 +14,7 @@ export default function HistoryCard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://my-encryption-app.vercel.app/api/v1/messages/history', {
+                const response = await axios.get('https://my-encryption-app.onrender.com/api/v1/messages/history', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }

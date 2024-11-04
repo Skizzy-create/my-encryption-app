@@ -29,7 +29,7 @@ export default function SignInPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            axios.get("https://my-encryption-app.vercel.app/api/v1/user/me", {
+            axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -50,7 +50,7 @@ export default function SignInPage() {
 
     async function handleOnClick() {
         try {
-            const response = await axios.post("https://my-encryption-app.vercel.app/api/v1/user/login", {
+            const response = await axios.post("https://my-encryption-app.onrender.com/api/v1/user/login", {
                 email: email,
                 password: password
             });
