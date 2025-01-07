@@ -1,4 +1,3 @@
-import exp from 'constants';
 import express, { Request, Response } from 'express';
 import { validateUserLogin, validateUserSignUp } from '../middlewares/userSchemaValidators';
 import { UserModel } from '../models/User';

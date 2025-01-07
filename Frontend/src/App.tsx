@@ -4,22 +4,21 @@ import SignInPage from './pages/SignIn';
 import Landing from "./pages/Landing";
 import Trial from "./pages/Trial";
 import MainPage2 from "./pages/MainPage2";
-import HistoryPage from "./pages/History";
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/MainPage" element={<MainPage2 />} />
-        <Route path="/SignUp" element={<SignupPage />} />
-        <Route path="/SignIn" element={<SignInPage />} />
-        <Route path="/History" element={<HistoryPage />} />
-        <Route path="/trial" element={<Trial />} />
-        {/* Catch-all route */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="bg-pink-100 min-h-screen">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/MainPage" element={<MainPage2 />} />
+          <Route path="/SignUp" element={<SignupPage />} />
+          <Route path="/SignIn" element={<SignInPage />} />
+          <Route path="/trial" element={<Trial />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 

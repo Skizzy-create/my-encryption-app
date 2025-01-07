@@ -7,8 +7,6 @@ import { CustomRequest } from './auth';
 dotEnv.config();
 const JWT_SECRET: string = process.env.JWT_SECRET || "";
 
-
-
 const hashPassword = async (password: String | Buffer): Promise<String | null> => {
     try {
         const salt = await bcrypt.genSalt(10);

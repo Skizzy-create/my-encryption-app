@@ -24,7 +24,7 @@ router.post('/encrypt', validateMessageEncryptDecrypt, extractUserId, async (req
             message: "Unsupported encryption algorithm",
             success: false
         });
-    }
+    };
 
     let userId;
     if (req.user) {

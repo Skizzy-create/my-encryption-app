@@ -14,7 +14,7 @@ export default function HistoryCard() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:5173/api/v1/messages/history', {
+                const response = await axios.get('http://localhost:8080/api/v1/messages/history', {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
