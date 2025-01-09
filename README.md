@@ -59,28 +59,6 @@ The frontend is built with Vue.js and is responsible for the user interface, inc
 
 For detailed technical documentation on the frontend, visit the [Frontend Documentation](./frontend/README.md).
 
-## Project Structure
-
-```plaintext
-my-encryption-app/
-│
-├── backend/
-│   ├── dist/
-│   ├── src/
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── README.md
-│
-├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── README.md
-│
-├── .gitignore
-└── README.md (this file)
-```
 ## CODE FLOW
 ```mermaid
 %%{init: {
@@ -144,6 +122,29 @@ graph TD
     X --> Y[Extract User ID]
     Y --> Z[Fetch User History]
     Z --> L
+```
+
+## Project Structure
+
+```plaintext
+my-encryption-app/
+│
+├── backend/
+│   ├── dist/
+│   ├── src/
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── README.md
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── README.md
+│
+├── .gitignore
+└── README.md (this file)
 ```
 ## License
 
