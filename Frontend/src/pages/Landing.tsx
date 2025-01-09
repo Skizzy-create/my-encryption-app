@@ -49,7 +49,7 @@ const Landing = () => {
 
                 <footer className="flex justify-center mt-6">
                     <a
-                        href="https://github.com/AsliaDev/my-encryption-app"
+                        href="https://github.com/skizzy-create/my-encryption-app"
                         className="flex items-center space-x-2 text-gray-700 hover:text-black transition-all"
                         target="_blank"
                     >
