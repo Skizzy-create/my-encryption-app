@@ -81,7 +81,70 @@ my-encryption-app/
 ├── .gitignore
 └── README.md (this file)
 ```
+## CODE FLOW
+```mermaid
+%%{init: {
+  'theme': 'dark',
+  'themeVariables': {
+    'fontFamily': 'monospace',
+    'primaryColor': '#fff',
+    'primaryTextColor': '#fff',
+    'primaryBorderColor': '#fff',
+    'lineColor': '#fff',
+    'secondaryColor': '#252525',
+    'tertiaryColor': '#252525'
+  }
+}}%%
 
+graph TD
+    A[Frontend] --> B[Home Page]
+    B --> C{User Action}
+    
+    %% Authentication Flow
+    C -->|Get Started| D[Login/Signup Window]
+    D -->|Skip| E[Continue as Guest]
+    D -->|Login| F[Authentication]
+    D -->|Signup| G[Registration]
+    
+    F -->|Validate| H[User Schema Validator]
+    G -->|Validate| H
+    H -->|Valid| I[Backend Auth Service]
+    I -->|Hash Password| J[Password Service]
+    I -->|Generate Token| K[JWT Service]
+    I -->|Store User| L[(MongoDB)]
+    
+    %% Main Application Flow
+    E --> M[Main Interface]
+    K --> M
+    
+    M -->|Encrypt Message| N[Encryption Route]
+    M -->|Decrypt Message| O[Decryption Route]
+    M -->|Generate QR| P[QR Code Route]
+    
+    %% Message Processing
+    N --> Q[Message Schema Validator]
+    O --> Q
+    P --> Q
+    
+    Q -->|Valid| R[Encryption Service]
+    Q -->|Valid| S[Decryption Service]
+    Q -->|Valid| T[QR Code Service]
+    
+    %% Database Operations
+    R --> U[Store Encrypted Message]
+    S --> V[Store Decrypted Message]
+    T --> W[Store QR Code]
+    
+    U --> L
+    V --> L
+    W --> L
+    
+    %% User History
+    M -->|View History| X[History Route]
+    X --> Y[Extract User ID]
+    Y --> Z[Fetch User History]
+    Z --> L
+```
 ## License
 
 This project is licensed under the MIT License.
