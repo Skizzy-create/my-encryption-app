@@ -31,7 +31,7 @@ export default function SignupPage() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            axios.get("http://localhost:8081/api/v1/user/me", {
+            axios.get("https://my-encryption-app.onrender.com/api/v1/user/me", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -52,7 +52,7 @@ export default function SignupPage() {
 
     async function handleOnClick() {
         try {
-            const response = await axios.post("http://localhost:8080/api/v1/user/signup", {
+            const response = await axios.post("https://my-encryption-app.onrender.com/api/v1/user/signup", {
                 firstName: firstName,
                 lastName: secondName,
                 email: email,
