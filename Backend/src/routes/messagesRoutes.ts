@@ -131,7 +131,7 @@ router.post('/decrypt', validateMessageEncryptDecrypt, extractUserId, async (req
     }
 });
 
-router.get('/history', authMiddleware, async (req: CustomRequest, res: Response, next: NextFunction): Promise<any> => {
+router.get('/history', authMiddleware, async (req: CustomRequest, res: Response): Promise<any> => {
     try {
         const userId = (req.user as JwtPayload).id;
         const encryptedMessages = await EncryptMessageModel.find({ userId });
